@@ -1,12 +1,22 @@
 /*jslint indent:4 */
+/**
+ * Generic Imports
+ */
 var vows = require('vows');
 var assert = require('assert');
 var path = require('path');
-var fs = require('fs');
 
-var __moduleTested = '../lib/' + path.basename(__filename.replace('_test.js', ''));
-var __filenameTested = fs.realpathSync(path.join(__dirname, __moduleTested, 'index.js'));
-var jsclass = require(__moduleTested);
+require('./_env');
+var __filenameTested = path.join(
+    path.dirname(__filename).replace(global.__test, global.__lib),
+    path.basename(__filename).replace('_test.js', ''),
+    'index.js'
+);
+
+/**
+ * Imports
+ */
+var jsclass = require(__filenameTested);
 
 /*******************************************************************************
  * JSLint validation

@@ -1,0 +1,25 @@
+Altshift Framework package for nodejs
+
+DESCRIPTION:
+
+This the altshift framework for nodejs. The aim is to gather the best npm packages through 
+dependencies and provide functions and classes relying on JS.Class (http://jsclass.jcoglan.com/).
+
+HOW TO INSTALL:
+
+ 1. Install plugin `git clone git://github.com/as-jpolo/node-altshift.git .` OR install via npm `npm install altshift` 
+ 2. Include the library in your path
+
+CHANGELOG:
+
+0.1
+
+# tested and functional package
+
+TODO:
+
+# handle symlinks and manage recursion
+
+CONTRIBUTION:
+
+Contributions are welcome, feel free to push changes on github.
