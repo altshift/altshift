@@ -6,10 +6,10 @@
 	"keywords" : ["framework", "jsclass"],
 	"repository" : { 
 		"type" : "git",
-		"url" : "git://github.com/as-jpolo/node-altshift.git"
+		"url" : "git://github.com/as-jpolo/altshift.git"
 	},
 	"bugs" : { 
-		"web" : "http://github.com/as-jpolo/node-altshift/issues" 
+		"web" : "http://github.com/as-jpolo/altshift/issues" 
 	},
 	"directories" : { 
 		"lib" : "lib",
@@ -18,7 +18,7 @@
 	"licenses" :[ 
 	  	{ 
 	  		"type" : "MIT",
-	    	"url" : "http://github.com/as-jpolo/node-altshift/blob/master//LICENSE"
+	    	"url" : "http://github.com/as-jpolo/altshift/blob/master//LICENSE"
 	    }   
 	],
   	"dependencies"  : {
