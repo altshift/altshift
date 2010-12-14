@@ -1,3 +1,4 @@
+/*jslint indent:4 */
 var path = require('path');
 var fs = require('fs');
 
@@ -19,5 +20,5 @@ function searchRoot(root) {
     } catch (e) {
         searchRoot(path.dirname(root));
     }
-};
+}
 searchRoot(__dirname);
