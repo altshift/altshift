@@ -1,24 +1,31 @@
 /*jslint indent:4 */
 var path = require('path');
 var fs = require('fs');
+var vows = require('vows');
 
+var env = {};
 function searchRoot(root) {
-    if (global.__root || root.length === 0) {
+    if (env.ROOT || env.length === 0) {
         return;
     }
     try {
         fs.statSync(path.join(root, 'package.json'));
 
-        global.__root = root;
-        global.__lib = global.__lib || path.join(global.__root, 'lib');
-        global.__test = global.__test || path.join(global.__root, 'test');
-        global.__resource = global.__resource || path.join(global.__root, 'resource');
+        env.ROOT = root;
+        env.LIB = env.LIB || path.join(env.ROOT, 'lib');
+        env.TEST = env.__test || path.join(env.ROOT, 'test');
+        env.RESOURCE = env.__resource || path.join(env.ROOT, 'resource');
 
-        if (require.paths.indexOf(global.__lib)) {
-            require.paths.push(global.__lib);
+        if (require.paths.indexOf(env.LIB)) {
+            require.paths.push(env.LIB);
         }
     } catch (e) {
         searchRoot(path.dirname(root));
     }
 }
 searchRoot(__dirname);
+
+//module.exports = env;
+for (var property in env) {
+    global[property] = env[property];
+}

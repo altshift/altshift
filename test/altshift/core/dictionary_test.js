@@ -8,7 +8,7 @@ var path = require('path');
 
 require('../../_env');
 var __filenameTested = path.join(
-    path.dirname(__filename).replace(global.__test, global.__lib),
+    path.dirname(__filename).replace(global.TEST, global.LIB),
     path.basename(__filename).replace('_test.js', '.js')
 );
 
@@ -204,6 +204,22 @@ var DictionaryTest = vows.describe('Dictionary class').addBatch({
             assert.deepEqual(topic.count(iterator), 0);
             topic.unset('foo');
             assert.deepEqual(topic.count(iterator), 0);
+        }
+    },
+    "length" : {
+        topic : function (item) {
+            return createDictionary();
+        },
+        'should return the key count' : function (topic) {
+            assert.deepEqual(topic.length, 0);
+            topic.set('foo', 1);
+            assert.deepEqual(topic.length, 1);
+            topic.set('bar', 2);
+            assert.deepEqual(topic.length, 2);
+            topic.unset('foo');
+            assert.deepEqual(topic.length, 1);
+            topic.unset('foo');
+            assert.deepEqual(topic.length, 1);
         }
     },
     "extend()" : {

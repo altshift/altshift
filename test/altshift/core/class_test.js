@@ -8,7 +8,7 @@ var path = require('path');
 
 require('../../_env');
 var __filenameTested = path.join(
-    path.dirname(__filename).replace(global.__test, global.__lib),
+    path.dirname(__filename).replace(global.TEST, global.LIB),
     path.basename(__filename).replace('_test.js', '.js')
 );
 
@@ -124,7 +124,43 @@ var ClassTest = vows.describe('Class class').addBatch({
             assert.equal(obj.barMethod('tata'), 'tata');
         }
     },
+    "object.finalize()" : {
+        topic : function (item) {
+            var ClassNew, obj;
 
+            ClassNew = createClass('ClassNew', {
+                fooMethod: function () {
+                }
+            });
+
+            obj = new ClassNew();
+            obj.arg = 'foo';
+            obj.anonymous = {
+                foo : 1
+            };
+            return obj;
+        },
+        'should destroy all properties' : function (topic) {
+            assert.equal(topic.arg, 'foo');
+            assert.equal(topic.anonymous.foo, 1);
+
+            topic.finalize();
+
+            assert.equal(topic.arg, undefined);
+            assert.equal(topic.anonymous, undefined);
+        },
+        'should transform into anonymous object' : function (topic) {
+            var klass = topic.klass;
+
+            assert.isFunction(topic.fooMethod);
+            assert.ok(topic instanceof klass);
+
+            topic.finalize();
+
+            assert.ok(!(topic.fooMethod instanceof Function));
+            assert.ok(topic instanceof klass);
+        }
+    },
     "object.clone()" : {
         topic : function (item) {
             var ClassNew, obj;

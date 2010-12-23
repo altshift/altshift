@@ -6,9 +6,9 @@ var vows = require('vows');
 var assert = require('assert');
 var path = require('path');
 
-require('./_env');
+var env = require('./_env');
 var __filenameTested = path.join(
-    path.dirname(__filename).replace(global.__test, global.__lib),
+    path.dirname(__filename).replace(global.TEST, global.LIB),
     path.basename(__filename).replace('_test.js', ''),
     'index.js'
 );
