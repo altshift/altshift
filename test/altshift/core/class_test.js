@@ -148,17 +148,6 @@ var ClassTest = vows.describe('Class class').addBatch({
 
             assert.equal(topic.arg, undefined);
             assert.equal(topic.anonymous, undefined);
-        },
-        'should transform into anonymous object' : function (topic) {
-            var klass = topic.klass;
-
-            assert.isFunction(topic.fooMethod);
-            assert.ok(topic instanceof klass);
-
-            topic.finalize();
-
-            assert.ok(!(topic.fooMethod instanceof Function));
-            assert.ok(topic instanceof klass);
         }
     },
     "object.clone()" : {

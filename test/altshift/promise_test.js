@@ -96,6 +96,40 @@ var PromiseTest = vows.describe('Promise').addBatch({
         "should emitError passing error to the callback": function (topic) {
             assert.equal(topic.error, 'error result');
         }
+    },
+    'cancel()': {
+        topic: function () {
+            var self = this,
+                report = {
+                    promise: new promise.Deferred(function () {
+                        return 'foobar_cancelled';
+                    })
+                };
+            report.promise.then(function (result) {
+                report.value = 'success';
+                self.callback(null, report);
+            }, function (error) {
+                report.error = error;
+                self.callback(null, report);
+            });
+
+            setTimeout(function () {
+                report.promise.cancel();
+
+                try {
+                    report.promise.emitSuccess();
+                } catch (e) {
+                    //Do nothing
+                }
+            }, 1);
+        },
+        "should be instance of Promise": function (topic) {
+            assert.ok(promise.isPromise(topic.promise));
+        },
+        "should emitError passing canceller() result as error": function (topic) {
+            assert.ok(topic.error instanceof Error);
+            assert.equal(topic.error.message, 'foobar_cancelled');
+        }
     }
 });
 
