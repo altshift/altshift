@@ -130,6 +130,41 @@ var PromiseTest = vows.describe('Promise').addBatch({
             assert.ok(topic.error instanceof Error);
             assert.equal(topic.error.message, 'foobar_cancelled');
         }
+    },
+    'timeout()': {
+        topic: function () {
+            var self = this,
+                report = {
+                    status: 'unknown',
+                    promise: new promise.Deferred(function () {
+                        return 'cancelled';
+                    })
+                };
+            report.promise.then(function (result) {
+                report.status = 'success';
+                self.callback(null, report);
+            }, function (error) {
+                report.status = 'error';
+                report.error = error;
+                self.callback(null, report);
+            });
+
+
+            report.promise.timeout(1);
+            setTimeout(function () {
+                try {
+                    report.promise.emitSuccess();
+                } catch (e) {
+                    //Do nothing
+                }
+            }, 2);
+        },
+        "should be instance of Promise": function (topic) {
+            assert.ok(promise.isPromise(topic.promise));
+        },
+        "should emitError after timeout": function (topic) {
+            assert.ok(topic.error instanceof Error);
+        }
     }
 });
 
