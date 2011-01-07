@@ -38,9 +38,10 @@ var UriTest = vows.describe('Uri class').addBatch({
         topic: function () {
             return createUri({
                 protocol: 'http',
+                auth: null,
                 hostname: 'localhost',
                 port: 333,
-                path: ['toto', 'tata'],
+                path: ['', 'toto', 'tata'],
                 hash: 'isch',
                 query: {
                     foo: 'bar'
@@ -54,9 +55,10 @@ var UriTest = vows.describe('Uri class').addBatch({
         'should create an Uri with corresponding attributes ': function (topic) {
             assert.deepEqual(topic, {
                 protocol: 'http',
+                auth: null,
                 hostname: 'localhost',
                 port: 333,
-                path: ['toto', 'tata'],
+                path: ['', 'toto', 'tata'],
                 hash: 'isch',
                 query: {
                     foo: 'bar'
@@ -77,9 +79,10 @@ var UriTest = vows.describe('Uri class').addBatch({
         'should create an Uri with corresponding attributes ': function (topic) {
             assert.deepEqual(topic, {
                 protocol: 'http',
+                auth: null,
                 hostname: 'localhost',
                 port: 333,
-                path: ['toto', 'tata'],
+                path: ['', 'toto', 'tata'],
                 hash: 'isch',
                 query: {
                     foo: 'bar'
@@ -95,9 +98,10 @@ var UriTest = vows.describe('Uri class').addBatch({
             return createUri(
             createUri({
                 protocol: 'http',
+                auth: null,
                 hostname: 'localhost',
                 port: 333,
-                path: ['toto', 'tata'],
+                path: ['', 'toto', 'tata'],
                 hash: 'isch',
                 query: {
                     foo: 'bar'
@@ -111,9 +115,10 @@ var UriTest = vows.describe('Uri class').addBatch({
         'should create an Uri with corresponding attributes ': function (topic) {
             assert.deepEqual(topic, {
                 protocol: 'http',
+                auth: null,
                 hostname: 'localhost',
                 port: 333,
-                path: ['toto', 'tata'],
+                path: ['', 'toto', 'tata'],
                 hash: 'isch',
                 query: {
                     foo: 'bar'

@@ -157,7 +157,7 @@ var PromiseTest = vows.describe('Promise').addBatch({
                 } catch (e) {
                     //Do nothing
                 }
-            }, 2);
+            }, 3);
         },
         "should be instance of Promise": function (topic) {
             assert.ok(promise.isPromise(topic.promise));

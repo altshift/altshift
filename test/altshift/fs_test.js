@@ -53,6 +53,24 @@ var FsTest = vows.describe('fs module').addBatch({
         "should return the file content": function (topic) {
             assert.equal(topic.result, 'Helloworld');
         }
+    },
+    'readFile(..., callback)': {
+        topic: function () {
+            var self = this,
+                filePath = path.join(RESOURCE_DIR, 'test.ext'),
+                report = {
+                    returnValue: fs.readFile(filePath, function (error, result) {
+                        report.result = result.toString('utf8');
+                        self.callback(null, report);
+                    })
+                };
+        },
+        "should be instance of Promise": function (topic) {
+            assert.ok(promise.isPromise(topic.returnValue));
+        },
+        "should return the file content": function (topic) {
+            assert.equal(topic.result, 'Helloworld');
+        }
     }
 
 });
