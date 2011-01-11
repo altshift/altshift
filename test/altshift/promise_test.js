@@ -42,12 +42,12 @@ var PromiseTest = vows.describe('Promise').addBatch({
             topic = new promise.Deferred();
             assert.ok(topic instanceof promise.Deferred);
             assert.ok(topic instanceof promise.Promise);
+            assert.ok(promise.isPromise(topic));
 
             topic = promise.defer();
             assert.ok(topic instanceof promise.Deferred);
             assert.ok(topic instanceof promise.Promise);
-
-
+            assert.ok(promise.isPromise(topic));
         }
     },
     'emitSuccess()': {

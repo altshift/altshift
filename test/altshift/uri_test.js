@@ -62,7 +62,12 @@ var UriTest = vows.describe('Uri class').addBatch({
                 hash: 'isch',
                 query: {
                     foo: 'bar'
-                }
+                },
+
+                href: 'http://localhost:333/toto/tata?foo=bar#isch',
+                host: 'localhost:333',
+                pathname: '/toto/tata',
+                search: '?foo=bar'
             });
         },
         'should have valid string representation': function (topic) {
@@ -86,7 +91,12 @@ var UriTest = vows.describe('Uri class').addBatch({
                 hash: 'isch',
                 query: {
                     foo: 'bar'
-                }
+                },
+
+                href: 'http://localhost:333/toto/tata?foo=bar#isch',
+                host: 'localhost:333',
+                pathname: '/toto/tata',
+                search: '?foo=bar'
             });
         },
         'should have valid string representation': function (topic) {
@@ -122,7 +132,12 @@ var UriTest = vows.describe('Uri class').addBatch({
                 hash: 'isch',
                 query: {
                     foo: 'bar'
-                }
+                },
+
+                href: 'http://localhost:333/toto/tata?foo=bar#isch',
+                host: 'localhost:333',
+                pathname: '/toto/tata',
+                search: '?foo=bar'
             });
         },
         'should have valid string representation': function (topic) {
