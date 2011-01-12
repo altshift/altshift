@@ -19,7 +19,6 @@ var client = require(__filenameTested);
 var promise = require(path.join(global.LIB, 'altshift', 'promise')),
     when = promise.when;
 
-
 /*******************************************************************************
  * JSLint validation
  ******************************************************************************/
@@ -40,8 +39,14 @@ function createServer(callback) {
     callback = callback || function () {};
 
     var serverTest = require('http').createServer(function (request, response) {
-        response.writeHead(200, {'Content-Type': 'text/plain'});
-        response.end('Helloworld');
+        if (request.url !== '/timeout') {
+            response.writeHead(200, {'Content-Type': 'text/plain'});
+            response.end('Helloworld');
+        } else {
+            //Let the request timeout
+        }
+
+
     });
 
     serverTest.listen(3000, 'localhost', callback);
@@ -54,7 +59,7 @@ var ClientTest = vows.describe('Client class').addBatch({
         topic: function () {
             var self = this,
                 client = createClient({
-                    timeout: 3000
+                    timeout: 300
                 }),
                 report = {
                     response: null,
@@ -63,25 +68,56 @@ var ClientTest = vows.describe('Client class').addBatch({
                 };
 
             report.server = createServer(function () {
-                report.promise = client.request({
+
+                // promise accepted
+                report.promiseAccepted = client.request({
                     url: 'http://localhost:3000/'
+                }).then(function (response) {
+                    report.promiseAcceptedResult = response;
+                    //self.callback(null, report);
+                    return response;
                 });
 
-                when(report.promise, function (response) {
-                    report.response = response;
-
-                    self.callback(null, report);
+                // promise refused
+                report.promiseRefused = client.request({
+                    url: 'http://localhost:3001/'
+                }).then(function (success) {
+                    //Should never happen
                 }, function (error) {
-                    self.callback(error);
+                    report.promiseRefusedError = error;
                 });
+
+                // promise timeout
+                report.promiseTimeout = client.request({
+                    url: 'http://localhost:3000/timeout'
+                }).then(function (success) {
+                  //Should never happen
+                }, function (error) {
+                    report.promiseTimeoutError = error;
+                });
+
+
+                report.promiseAccepted
+                    .and(report.promiseRefused, report.promiseTimeout)
+                    .then(function () {
+                        self.callback(null, report);
+                    });
             });
         },
         'should return a promise': function (topic) {
-            assert.ok(promise.isPromise(topic.promise));
+            assert.ok(promise.isPromise(topic.promiseAccepted));
         },
-        'should return a reponse object when promise fullfilled': function (topic) {
-            assert.notEqual(topic.response, null);
-            assert.equal(topic.response.body, 'Helloworld');
+        'should return a reponse object when request is correct': function (topic) {
+            assert.notEqual(topic.promiseAcceptedResult, null);
+            assert.equal(topic.promiseAcceptedResult.body, 'Helloworld');
+        },
+        'should return an error object request fails': function (topic) {
+            assert.notEqual(topic.promiseRefusedError, null);
+            assert.ok(topic.promiseRefusedError instanceof Error);
+        },
+        'should return an error object request times out': function (topic) {
+            assert.notEqual(topic.promiseTimeoutError, null);
+            assert.equal(topic.promiseTimeoutError.code, 'timeout');
         },
         teardown: function (topic) {
             topic.server.close();

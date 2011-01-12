@@ -136,20 +136,21 @@ var PromiseTest = vows.describe('Promise').addBatch({
             var self = this,
                 report = {
                     status: 'unknown',
-                    promise: new promise.Deferred(function () {
+                    promise: promise.defer(function () {
+                        return 'cancelled';
+                    }),
+                    promiseAborted: promise.defer(function () {
                         return 'cancelled';
                     })
                 };
+
+            //Promise timeout
             report.promise.then(function (result) {
                 report.status = 'success';
-                self.callback(null, report);
             }, function (error) {
                 report.status = 'error';
                 report.error = error;
-                self.callback(null, report);
             });
-
-
             report.promise.timeout(1);
             setTimeout(function () {
                 try {
@@ -158,12 +159,38 @@ var PromiseTest = vows.describe('Promise').addBatch({
                     //Do nothing
                 }
             }, 3);
+
+
+            //Promise that will not timeout
+            report.promiseAborted.then(function (result) {
+                report.statusAborted = 'success';
+            }, function (error) {
+                report.statusAborted = 'error';
+                report.errorAborted = error;
+            });
+            report.promiseAborted.timeout(1);
+            report.promiseAborted.timeout(null);
+            setTimeout(function () {
+                try {
+                    report.promiseAborted.emitSuccess();
+                } catch (e) {
+                    //Do nothing
+                }
+            }, 10);
+
+            promise.all(report.promise, report.promiseAborted).then(function () {
+                self.callback(null, report);
+            });
+
         },
-        "should be instance of Promise": function (topic) {
+        "should return instance of Promise": function (topic) {
             assert.ok(promise.isPromise(topic.promise));
         },
         "should emitError after timeout": function (topic) {
-            assert.ok(topic.error instanceof Error);
+            assert.equal(topic.status, 'error');
+        },
+        "should remove timeout if called as timeout(null)": function (topic) {
+            assert.equal(topic.statusAborted, 'success');
         }
     }
 });
@@ -299,7 +326,9 @@ var FunctionTest = vows.describe('promise module').addBatch({
             });
 
             promises.forEach(function (promiseObj, index) {
-                promiseObj.emitSuccess('result:' + index);
+                setTimeout(function () {
+                    promiseObj.emitSuccess('result:' + index);
+                }, Math.random() * 10 + 1);
             });
         },
         "should return instance of Promise": function (topic) {
