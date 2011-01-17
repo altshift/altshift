@@ -27,5 +27,7 @@ searchRoot(__dirname);
 
 //module.exports = env;
 for (var property in env) {
-    global[property] = env[property];
+    if (env.hasOwnProperty(property)) {
+        global[property] = env[property];
+    }
 }

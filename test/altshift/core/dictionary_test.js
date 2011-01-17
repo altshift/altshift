@@ -303,11 +303,11 @@ var DictionaryTest = vows.describe('Dictionary class').addBatch({
         'should return this' : function (topic) {
             assert.equal(topic.clear(), topic);
         },
-        'should empty an already empty hash without error' : function (topic) {
+        'should empty an already empty dictionary without error' : function (topic) {
             topic.clear();
             assert.deepEqual(topic, createDictionary());
         },
-        'should empty the hash content' : function (topic) {
+        'should empty the content' : function (topic) {
             topic.extend({
                 foo : 1,
                 bar : 2,
@@ -333,7 +333,7 @@ var DictionaryTest = vows.describe('Dictionary class').addBatch({
             });
             return hashObj;
         },
-        'should return copy of this hash' : function (topic) {
+        'should return copy of this dictionary' : function (topic) {
             var clone = topic.clone();
             clone.set('foo', 3);
 
@@ -356,6 +356,43 @@ var DictionaryTest = vows.describe('Dictionary class').addBatch({
 
             assert.deepEqual(clone.get('anonymous'), topic.get('anonymous'));
             assert.notEqual(clone.get('anonymous'), topic.get('anonymous'));
+        }
+    },
+    "map()" : {
+        topic : function (item) {
+            var obj = createDictionary({
+                foo: 1,
+                bar: 2,
+                hashObject: createDictionary({
+                    ahah : 3
+                }),
+                anonymous: {
+                    ohoh : 3
+                }
+            });
+            return obj;
+        },
+        'should map an empty dictionary': function () {
+            var result = createDictionary().map(function (value, key) {});
+
+            assert.ok(result instanceof dictionary.Dictionary);
+            assert.deepEqual(result, createDictionary());
+        },
+        'should return a mapped dictionary' : function (topic) {
+            var result = topic.map(function (value, key) {
+                if (key === 'foo') {
+                    return ['baz', value];
+                }
+                if (value === 2) {
+                    return ['newKey', 3];
+                }
+            });
+
+            assert.ok(result instanceof dictionary.Dictionary);
+            assert.deepEqual(result, createDictionary({
+                baz: 1,
+                newKey: 3
+            }));
         }
     }
 });
