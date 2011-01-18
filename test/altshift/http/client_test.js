@@ -74,8 +74,10 @@ var ClientTest = vows.describe('Client class').addBatch({
                     url: 'http://localhost:3000/'
                 }).then(function (response) {
                     report.promiseAcceptedResult = response;
-                    //self.callback(null, report);
-                    return response;
+                    return response.body.read();
+                }).then(function (reponseBody) {
+                    report.promiseAcceptedBody = reponseBody;
+                    return true;
                 });
 
                 // promise refused
@@ -109,7 +111,7 @@ var ClientTest = vows.describe('Client class').addBatch({
         },
         'should return a reponse object when request is correct': function (topic) {
             assert.notEqual(topic.promiseAcceptedResult, null);
-            assert.equal(topic.promiseAcceptedResult.body, 'Helloworld');
+            assert.equal(topic.promiseAcceptedBody, 'Helloworld');
         },
         'should return an error object request fails': function (topic) {
             assert.notEqual(topic.promiseRefusedError, null);

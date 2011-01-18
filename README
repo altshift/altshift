@@ -15,6 +15,7 @@ CHANGELOG:
 0.3.x
 0.2.x
 
+# promise based io module
 # promise based http client
 # promise base fs api
 # Finder implementation

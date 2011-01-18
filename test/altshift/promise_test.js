@@ -373,7 +373,7 @@ var FunctionTest = vows.describe('promise module').addBatch({
             assert.equal(topic.result, 'result:0');
         }
     },
-    'serial()': {
+    'reduce()': {
         topic: function () {
             var self = this,
                 promises = [
@@ -419,7 +419,7 @@ var FunctionTest = vows.describe('promise module').addBatch({
                     }
                 ],
                 report = {
-                    returnValue: promise.serial(promises, '/')
+                    returnValue: promise.reduce(promises, '/')
                 };
 
             promise.when(report.returnValue, function (result) {
@@ -452,6 +452,34 @@ var FunctionTest = vows.describe('promise module').addBatch({
         },
         "should emitSuccess passing value to the callback": function (topic) {
             assert.ok(topic.delayedTime >= topic.currentTime + 10);
+        }
+
+    },
+    'execute()': {
+        topic: function () {
+            var self = this,
+                report = {},
+                asyncFunction = function (firstArg, secondArg, callback) {
+                    setTimeout(function () {
+                        report.firstArg = firstArg;
+                        report.secondArg = secondArg;
+                        callback(null, 'result');
+                    }, 5);
+                };
+            report.promise = promise.execute(asyncFunction, 'foo', 'bar');
+            report.promise.then(function (result) {
+                report.returnValue = result;
+                self.callback(null, report);
+            });
+        },
+        "should return instance of Promise": function (topic) {
+            assert.ok(promise.isPromise(topic.promise));
+        },
+        "should emitSuccess passing value to the callback": function (topic) {
+            assert.equal(topic.firstArg, 'foo');
+            assert.equal(topic.secondArg, 'bar');
+            assert.equal(topic.returnValue, 'result');
+
         }
 
     }
