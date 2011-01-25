@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+//Imports
+var util = require(process.binding('natives').util ? 'util' : 'sys'),
+	fs = require('fs'),
+	path = require('path'),
+	ROOT_PATH, LIB_PATH;
+
+
+//Build path
+ROOT_PATH = path.dirname(__dirname);
+LIB_PATH = path.join(path.dirname(__dirname), 'lib');
+require.paths.unshift(LIB_PATH);
+
+//TODO
+console.log('Work in progress');
