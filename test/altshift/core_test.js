@@ -127,7 +127,6 @@ var CoreTest = vows.describe('core module').addBatch({
             assert.equal(topic('foo bar'), false);
             assert.equal(topic(1), false);
             assert.equal(topic(true), false);
-
             assert.equal(topic(undefined), false);
 
         },
@@ -142,6 +141,36 @@ var CoreTest = vows.describe('core module').addBatch({
             ObjSub.prototype = {};
 
             assert.equal(topic(new ObjSub()), true);
+        }
+    },
+    "mixin()": {
+        topic: function () {
+            var Class1 = function () {},
+                Class2 = function () {},
+                obj1 = new Class1(),
+                obj2 = new Class2();
+
+            Class1.prototype.class1PrototypedProperty = 'class1PrototypedProperty';
+            Class1.prototype.commonPrototypedProperty = 'commonPrototypedProperty1';
+
+            Class2.prototype.class2PrototypedProperty = 'class2PrototypedProperty';
+            Class2.prototype.commonPrototypedProperty = 'commonPrototypedProperty2';
+
+            obj1.foo = 'foo';
+            obj1.bar = 'bar';
+
+            obj2.foo = 'prop2';
+            obj1.baz = 'baz';
+
+            return core.mixin(obj1, obj2);
+        },
+        'should mix only own properties': function (topic) {
+            assert.equal(topic.foo, 'prop2');
+            assert.equal(topic.bar, 'bar');
+            assert.equal(topic.baz, 'baz');
+
+            assert.equal(topic.commonPrototypedProperty, 'commonPrototypedProperty1');
+            assert.isUndefined(topic.class2PrototypedProperty);
         }
     }
 });
