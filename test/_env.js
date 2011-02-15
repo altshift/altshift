@@ -1,4 +1,4 @@
-/*jslint indent:4 */
+/*jslint nodejs: true, indent:4 */
 var path = require('path');
 var fs = require('fs');
 var vows = require('vows');

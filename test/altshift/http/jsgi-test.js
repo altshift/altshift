@@ -1,4 +1,4 @@
-/*jslint indent:4 */
+/*jslint nodejs: true, indent:4 */
 /**
  * Generic Imports
  */
@@ -6,16 +6,16 @@ var vows = require('vows');
 var assert = require('assert');
 var path = require('path');
 
-var env = require('../_env');
+var env = require('../../_env');
 var __filenameTested = path.join(
     path.dirname(__filename).replace(global.TEST, global.LIB),
-    path.basename(__filename).replace('_test.js', '.js')
+    path.basename(__filename).replace('-test.js', '.js')
 );
 
 /**
  * Imports
  */
-var io = require(__filenameTested);
+var jsgi = require(__filenameTested);
 
 /*******************************************************************************
  * JSLint validation
@@ -27,10 +27,18 @@ try {
 }
 
 /*******************************************************************************
- * IoTest
+ * RequestTest
  ******************************************************************************/
-var IoTest = vows.describe('io module').addBatch({
+var RequestTest = vows.describe('Request class').addBatch({
 
 });
 
-exports.IoTest = IoTest;
+/*******************************************************************************
+ * ResponseTest
+ ******************************************************************************/
+var ResponseTest = vows.describe('Response class').addBatch({
+
+});
+
+exports.RequestTest = RequestTest;
+exports.ResponseTest = ResponseTest;

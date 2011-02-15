@@ -1,4 +1,4 @@
-/*jslint indent:4 */
+/*jslint nodejs: true, indent:4 */
 /**
  * Generic Imports
  */
@@ -9,7 +9,7 @@ var path = require('path');
 require('../_env');
 var __filenameTested = path.join(
     path.dirname(__filename).replace(global.TEST, global.LIB),
-    path.basename(__filename).replace('_test.js', ''),
+    path.basename(__filename).replace('-test.js', ''),
     'index.js'
 );
 
