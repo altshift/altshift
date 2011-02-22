@@ -23,7 +23,7 @@ var Finder = finder.Finder;
 /**
  * Constants
  */
-var RESOURCE_DIR = path.join(global.RESOURCE, 'test', 'finder_test');
+var RESOURCE_DIR = path.join(global.RESOURCE, 'test', path.basename(__filename).replace('.js', ''));
 
 function createFinder() {
     return (new Finder());

@@ -19,7 +19,7 @@ var fs = require(__filenameTested);
 var promise = require(path.join(global.LIB, 'altshift', 'promise')),
     when = promise.when;
 
-var RESOURCE_DIR = path.join(global.RESOURCE, 'test', 'fs_test');
+var RESOURCE_DIR = path.join(global.RESOURCE, 'test', path.basename(__filename).replace('.js', ''));
 
 /*******************************************************************************
  * JSLint validation
