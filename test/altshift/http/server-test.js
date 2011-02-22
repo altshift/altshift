@@ -2,9 +2,9 @@
 /**
  * Generic Imports
  */
-var vows = require('vows');
-var assert = require('assert');
-var path = require('path');
+var vows = require('vows'),
+    assert = require('assert'),
+    path = require('path');
 
 var env = require('../../_env');
 var __filenameTested = path.join(
@@ -16,6 +16,7 @@ var __filenameTested = path.join(
  * Imports
  */
 var PORT = 60000;
+var http = require(path.join(global.LIB, 'altshift', 'http'));
 var server = require(__filenameTested);
 var promise = require(path.join(global.LIB, 'altshift', 'promise')),
     when = promise.when;
@@ -34,6 +35,15 @@ try {
  ******************************************************************************/
 function createServer(requestHandler, options) {
     return new server.Server(requestHandler, options);
+}
+
+function createRequest(url) {
+    return http.request({
+            url: url
+        })
+        .then(function (response) {
+            return response.body.read();
+        });
 }
 
 var ServerTest = vows.describe('Server class').addBatch({
@@ -62,6 +72,33 @@ var ServerTest = vows.describe('Server class').addBatch({
         },
         "should return a Promise when server is ready": function (topic) {
             assert.ok(promise.isPromise(topic.listenPromise));
+        },
+        teardown: function (topic) {
+            topic.server.stop();
+        }
+    },
+    "onRequest()": {
+        topic: function () {
+            var self = this,
+                port = PORT + 1,
+                report = {};
+
+            report.server = createServer(function (request) {
+                return new http.Response({
+                    body: ['hello world']
+                });
+            });
+
+            when(report.server.listen(port), function () {
+                createRequest('http://localhost:' + port + '/mypath')
+                    .then(function (responseBody) {
+                        report.responseBody = responseBody;
+                        self.callback(null, report);
+                    });
+            });
+        },
+        "should return a correct response body": function (topic) {
+            assert.equal(topic.responseBody, 'hello world');
         },
         teardown: function (topic) {
             topic.server.stop();
