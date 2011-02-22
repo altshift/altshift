@@ -103,6 +103,23 @@ var CoreTest = vows.describe('core module').addBatch({
             assert.equal(topic(new StringSub()), true);
         }
     },
+    "isScalar()": {
+        topic: function () {
+            return core.isScalar;
+        },
+        'should return false for object, arrays, functions': function (topic) {
+            assert.equal(topic({}), false);
+            assert.equal(topic([]), false);
+            assert.equal(topic(undefined), false);
+            assert.equal(topic(function () {}), false);
+        },
+        'should return true for strings, number, booleans': function (topic) {
+            assert.equal(topic(true), true);
+            assert.equal(topic(null), true);
+            assert.equal(topic('my string'), true);
+            assert.equal(topic(1), true);
+        }
+    },
     "isFunction()": {
         topic: function () {
             return core.isFunction;
@@ -171,6 +188,32 @@ var CoreTest = vows.describe('core module').addBatch({
 
             assert.equal(topic.commonPrototypedProperty, 'commonPrototypedProperty1');
             assert.isUndefined(topic.class2PrototypedProperty);
+        }
+    },
+    "hash()": {
+        topic: function () {
+            return core.hash;
+        },
+        'should convert to string scalars': function (topic) {
+            assert.equal(topic('str'), 'str');
+            assert.equal(topic(12), '12');
+            assert.equal(topic(true), 'true');
+            assert.equal(topic(null), 'null');
+        },
+        'should hash objects': function (topic) {
+            assert.equal(topic({
+                toto: 'str',
+                foo: 1
+            }), '1foostrtoto');
+        },
+        'should hash nested objects': function (topic) {
+            assert.equal(topic({
+                toto: 'str',
+                foo: 1,
+                bar: {
+                    nested: true
+                }
+            }), '1foobarnestedtruestrtoto');
         }
     }
 });
