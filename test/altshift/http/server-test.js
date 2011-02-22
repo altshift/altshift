@@ -85,6 +85,9 @@ var ServerTest = vows.describe('Server class').addBatch({
 
             report.server = createServer(function (request) {
                 return new http.Response({
+                    headers: {
+                        "Transfer-Encoding": "utf8"
+                    },
                     body: ['hello world']
                 });
             });
