@@ -2,16 +2,12 @@
 /**
  * Generic Imports
  */
-var vows = require('vows');
-var assert = require('assert');
-var path = require('path');
+var vows = require('vows'),
+    assert = require('assert'),
+    path = require('path'),
+    env = require('../_env');
 
-require('../_env');
-var __filenameTested = path.join(
-    path.dirname(__filename).replace(global.TEST, global.LIB),
-    path.basename(__filename).replace('-test.js', ''),
-    'index.js'
-);
+var __filenameTested = env.toFileTested(__filename);
 
 /**
  * Imports

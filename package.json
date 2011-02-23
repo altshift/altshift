@@ -1,6 +1,6 @@
 {
 	"name": "altshift",
-	"version": "0.3.4-2",
+	"version": "0.3.4-3",
 	"author": "Julien Polo <julien.polo@altshift.fr>",
 	"description": "Altshift open source framework",
 	"keywords": ["framework", "jsclass"],
@@ -11,7 +11,7 @@
 	"bugs": { 
 		"web" : "http://github.com/as-jpolo/altshift/issues" 
 	},
-	"main": "./lib/altshift",
+	"main": "./lib/altshift/index.js",
 	"directories" : { 
 		"lib" : "./lib/altshift",
 		"test": "./test"

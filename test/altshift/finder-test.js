@@ -2,28 +2,25 @@
 /**
  * Generic Imports
  */
-var vows = require('vows');
-var assert = require('assert');
-var path = require('path');
+var vows = require('vows'),
+    assert = require('assert'),
+    path = require('path'),
+    env = require('../_env');
 
-var env = require('../_env');
-var __filenameTested = path.join(
-    path.dirname(__filename).replace(global.TEST, global.LIB),
-    path.basename(__filename).replace('-test.js', '.js')
-);
+var __filenameTested = env.toFileTested(__filename);
 
 /**
  * Imports
  */
 var finder = require(__filenameTested);
-var promise = require(path.join(global.LIB, 'altshift', 'promise'));
+var promise = require(path.join(env.LIB, 'altshift', 'promise'));
 
 var Finder = finder.Finder;
 
 /**
  * Constants
  */
-var RESOURCE_DIR = path.join(global.RESOURCE, 'test', path.basename(__filename).replace('.js', ''));
+var RESOURCE_DIR = path.join(env.RESOURCE, 'test', path.basename(__filename).replace('.js', ''));
 
 function createFinder() {
     return (new Finder());
