@@ -23,8 +23,6 @@
 	    }   
 	],
   	"dependencies": {
-		"vows": "*",
-		"lint": "*"
 	},
   	"engines": {
   		"node": ">=0.4.0"
