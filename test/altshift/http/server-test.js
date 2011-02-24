@@ -12,7 +12,6 @@ var __filenameTested = env.toFileTested(__filename);
 /**
  * Imports
  */
-var PORT = 60000;
 var http = require(path.join(env.LIB, 'altshift', 'http'));
 var server = require(__filenameTested);
 var promise = require(path.join(env.LIB, 'altshift', 'promise')),
@@ -37,8 +36,7 @@ function createServer(requestHandler, options) {
 function createRequest(url) {
     return http.request({
             url: url
-        })
-        .then(function (response) {
+        }).then(function (response) {
             return response.body.read();
         });
 }
@@ -55,29 +53,28 @@ var ServerTest = vows.describe('Server class').addBatch({
     "listen(port)": {
         topic: function () {
             var self = this,
-                report = {};
+                report = {},
+                port = env.getNewPort();
 
             report.server = createServer(function (request) {
 
             });
 
-            report.listenPromise = report.server.listen(PORT);
+            report.listenPromise = report.server.listen(port);
 
             when(report.listenPromise, function () {
+                report.server.stop();
                 self.callback(null, report);
             });
         },
         "should return a Promise when server is ready": function (topic) {
             assert.ok(promise.isPromise(topic.listenPromise));
-        },
-        teardown: function (topic) {
-            topic.server.stop();
         }
     },
     "onRequest()": {
         topic: function () {
             var self = this,
-                port = PORT + 1,
+                port = env.getNewPort(),
                 report = {};
 
             report.server = createServer(function (request) {
@@ -93,15 +90,13 @@ var ServerTest = vows.describe('Server class').addBatch({
                 createRequest('http://localhost:' + port + '/mypath')
                     .then(function (responseBody) {
                         report.responseBody = responseBody;
+                        report.server.stop();
                         self.callback(null, report);
                     });
             });
         },
         "should return a correct response body": function (topic) {
             assert.equal(topic.responseBody, 'hello world');
-        },
-        teardown: function (topic) {
-            topic.server.stop();
         }
     }
 });

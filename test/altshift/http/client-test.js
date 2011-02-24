@@ -32,7 +32,7 @@ function createClient(options) {
     return new client.Client(options);
 }
 
-function createServer(callback) {
+function createServer(port, callback) {
     callback = callback || function () {};
 
     var serverTest = require('http').createServer(function (request, response) {
@@ -46,7 +46,7 @@ function createServer(callback) {
 
     });
 
-    serverTest.listen(3000, 'localhost', callback);
+    serverTest.listen(port, 'localhost', callback);
     return serverTest;
 }
 
@@ -62,13 +62,14 @@ var ClientTest = vows.describe('Client class').addBatch({
                     response: null,
                     promise: null,
                     server: null
-                };
+                },
+                port = env.getNewPort();
 
-            report.server = createServer(function () {
+            report.server = createServer(port, function () {
 
                 // promise accepted
                 report.promiseAccepted = client.request({
-                    url: 'http://localhost:3000/'
+                    url: 'http://localhost:' + port + '/'
                 }).then(function (response) {
                     report.promiseAcceptedResult = response;
                     return response.body.read();
@@ -79,7 +80,7 @@ var ClientTest = vows.describe('Client class').addBatch({
 
                 // promise refused
                 report.promiseRefused = client.request({
-                    url: 'http://localhost:3001/'
+                    url: 'http://localhost:' + (port + 1) + '/'
                 }).then(function (success) {
                     //Should never happen
                 }, function (error) {
@@ -88,7 +89,7 @@ var ClientTest = vows.describe('Client class').addBatch({
 
                 // promise timeout
                 report.promiseTimeout = client.request({
-                    url: 'http://localhost:3000/timeout'
+                    url: 'http://localhost:' + port + '/timeout'
                 }).then(function (success) {
                   //Should never happen
                 }, function (error) {
@@ -99,6 +100,7 @@ var ClientTest = vows.describe('Client class').addBatch({
                 report.promiseAccepted
                     .and(report.promiseRefused, report.promiseTimeout)
                     .then(function () {
+                        report.server.close();
                         self.callback(null, report);
                     });
             });
@@ -117,9 +119,6 @@ var ClientTest = vows.describe('Client class').addBatch({
         'should return an error object request times out': function (topic) {
             assert.notEqual(topic.promiseTimeoutError, null);
             assert.equal(topic.promiseTimeoutError.code, 'timeout');
-        },
-        teardown: function (topic) {
-            topic.server.close();
         }
     }
 

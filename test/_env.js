@@ -3,7 +3,8 @@ var path = require('path');
 var fs = require('fs');
 var vows = require('vows');
 
-var env = {};
+var env = {},
+    port = 55000;
 function searchRoot(root) {
     if (env.ROOT || env.length === 0) {
         return;
@@ -32,6 +33,12 @@ searchRoot(__dirname);
         global[property] = env[property];
     }
 }*/
+
+env.getNewPort = function () {
+    var freePort = port;
+    port += 1;
+    return freePort;
+};
 
 env.toFileTested = function (filename) {
     var root = path.dirname(filename).replace(env.TEST, env.LIB),
