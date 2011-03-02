@@ -5,14 +5,14 @@
 var vows = require('vows'),
     assert = require('assert'),
     path = require('path'),
-    env = require('../_env');
+    env = require('../../_env');
 
 var __filenameTested = env.toFileTested(__filename);
 
 /**
  * Imports
  */
-var core = require(__filenameTested);
+var base = require(__filenameTested);
 
 /*******************************************************************************
  * JSLint validation
@@ -24,12 +24,12 @@ try {
 }
 
 /*******************************************************************************
- * CoreTest
+ * BaseTest
  ******************************************************************************/
-var CoreTest = vows.describe('core module').addBatch({
-    "require('core')": {
+var BaseTest = vows.describe('base module').addBatch({
+    /*"require('base')": {
         topic: function () {
-            return core;
+            return base;
         },
         'should not return undefined': function (topic) {
             assert.notEqual(topic, undefined);
@@ -52,10 +52,10 @@ var CoreTest = vows.describe('core module').addBatch({
             assert.isFunction(topic.interface);
             assert.isFunction(topic.dict);
         }
-    },
+    },*/
     "isArray()": {
         topic: function () {
-            return core.isArray;
+            return base.isArray;
         },
         'should return false for object, strings, number, boolean': function (topic) {
             assert.equal(topic({}), false);
@@ -78,7 +78,7 @@ var CoreTest = vows.describe('core module').addBatch({
     },
     "isString()": {
         topic: function () {
-            return core.isString;
+            return base.isString;
         },
         'should return false for object, arrays, number, boolean': function (topic) {
             assert.equal(topic({}), false);
@@ -101,7 +101,7 @@ var CoreTest = vows.describe('core module').addBatch({
     },
     "isScalar()": {
         topic: function () {
-            return core.isScalar;
+            return base.isScalar;
         },
         'should return false for object, arrays, functions': function (topic) {
             assert.equal(topic({}), false);
@@ -118,7 +118,7 @@ var CoreTest = vows.describe('core module').addBatch({
     },
     "isFunction()": {
         topic: function () {
-            return core.isFunction;
+            return base.isFunction;
         },
         'should return false for arrays, strings, number, boolean': function (topic) {
             assert.equal(topic('foo bar'), false);
@@ -134,7 +134,7 @@ var CoreTest = vows.describe('core module').addBatch({
     },
     "isObject()": {
         topic: function () {
-            return core.isObject;
+            return base.isObject;
         },
         'should return false for arrays, strings, number, boolean': function (topic) {
             assert.equal(topic('foo bar'), false);
@@ -175,7 +175,7 @@ var CoreTest = vows.describe('core module').addBatch({
             obj2.foo = 'prop2';
             obj1.baz = 'baz';
 
-            return core.mixin(obj1, obj2);
+            return base.mixin(obj1, obj2);
         },
         'should mix only own properties': function (topic) {
             assert.equal(topic.foo, 'prop2');
@@ -188,7 +188,7 @@ var CoreTest = vows.describe('core module').addBatch({
     },
     "hash()": {
         topic: function () {
-            return core.hash;
+            return base.hash;
         },
         'should convert to string scalars': function (topic) {
             assert.equal(topic('str'), 'str');
@@ -214,4 +214,4 @@ var CoreTest = vows.describe('core module').addBatch({
     }
 });
 
-exports.CoreTest = CoreTest;
+exports.BaseTest = BaseTest;
