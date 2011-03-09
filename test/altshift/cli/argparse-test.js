@@ -479,6 +479,27 @@ var ArgumentParserTest = vows.describe('ArgumentParser class').addBatch({
             var data = topic.parseArgs([ '--string', 'toto' ]);
             assert.strictEqual(data.string, 'toto');
         }
+    },
+
+
+    'parseArgs() / with different actions types': {
+        topic: function (item) {
+            return createParser({
+                program: 'foo'
+            });
+        },
+        'should parse using storeTrue': function (topic) {
+            topic.addArgument(
+                [ '--test' ],
+                {
+                    action: 'storeTrue'
+                }
+            );
+            var data = topic.parseArgs([ '--test', '2' ]);
+            assert.deepEqual(data, {test: true});
+            data = topic.parseArgs([]);
+            assert.deepEqual(data, {test: false});
+        }
     }
 });
 
