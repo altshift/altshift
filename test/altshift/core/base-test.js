@@ -211,6 +211,60 @@ var BaseTest = vows.describe('base module').addBatch({
                 }
             }), '1foobarnestedtruestrtoto');
         }
+    },
+    "format()": {
+        topic: function () {
+            return base.format;
+        },
+        'should return unchanged string when no args are passed': function (topic) {
+            var str = 'mystring';
+            assert.equal(topic(str), str);
+        },
+        'should return formatted string when passing array': function (topic) {
+            var str = 'mystring {0} ahah {2} ohoh {1} {flag}';
+            assert.equal(topic(str, []), str);
+            assert.equal(topic(str, [undefined, 'test', false]), 'mystring {0} ahah false ohoh test {flag}');
+        },
+        'should return formatted string when passing object': function (topic) {
+            var str = 'mystring {flag1} ahah {flag3} ohoh {1}';
+            assert.equal(topic(str, {}), str);
+            assert.equal(topic(str, {flag3: 'test3'}), 'mystring {flag1} ahah test3 ohoh {1}');
+            assert.equal(topic(str, {1: 'test2'}), 'mystring {flag1} ahah {flag3} ohoh test2');
+        },
+        'should return formatted string for nested formatters patterns': function (topic) {
+            var str = 'mystring {{flag1} ahah {flag3} ohoh {1}}';
+            assert.equal(topic(str, {flag3: 'test3'}), 'mystring {{flag1} ahah test3 ohoh {1}}');
+        },
+        'should return formatted string !s(string), !r(representation) flag': function (topic) {
+            var str = 'mystring {0!s} ahah {1!r}';
+            assert.equal(topic(str, []), str);
+            assert.equal(topic(str, [1234, {hello: 'world'}]), "mystring 1234 ahah { hello: 'world' }");
+        },
+        'should return formatted string with positional arguments when {} is encountered': function (topic) {
+            var str = 'mystring {!s} sep {} {!r}';
+            assert.equal(topic(str, []), str);
+            assert.equal(topic(str, [1, 2, '3']), "mystring 1 sep 2 '3'");
+        },
+        'should return formatted string with when path is provided (like 0.argument or arg[0])': function (topic) {
+            var args = {
+                    0: {
+                        foo: ':-)'
+                    },
+                    bar: {
+                        baz: 'hello!'
+                    },
+                    "very_special.char ?": {
+                        result: 'hello!'
+                    }
+                };
+            assert.equal(topic('', args), '');
+            assert.equal(topic('{0.foo}', args), ":-)");
+            assert.equal(topic('{bar.baz}', args), "hello!");
+
+            assert.equal(topic('{[0][foo]}', args), ":-)");
+            assert.equal(topic('{[very_special.char ?][result]!s}', args), "hello!");
+        }
+
     }
 });
 
