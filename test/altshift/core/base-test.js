@@ -263,6 +263,12 @@ var BaseTest = vows.describe('base module').addBatch({
 
             assert.equal(topic('{[0][foo]}', args), ":-)");
             assert.equal(topic('{[very_special.char ?][result]!s}', args), "hello!");
+        },
+        'should return formatted string for align instruction': function (topic) {
+            assert.equal(topic('{:<20}', []), '{:<20}');
+            assert.equal(topic('{:<20}', ['leftaligned']), "leftaligned         ");
+            assert.equal(topic('{:>20}', ['rightaligned']), "        rightaligned");
+            assert.equal(topic('{:^20}', ['centered']), "      centered      ");
         }
 
     }
