@@ -13,7 +13,9 @@ var argparse = require(__filenameTested),
     ArgumentParser = argparse.ArgumentParser;
 
 function createParser(options) {
-    options = options || {};
+    if (! options) {
+        options = {};
+    }
     options.debug = options.debug === undefined ? true: options.debug;
     options.stdout = options.stdout === undefined ? false: options.stdout;
     options.stderr = options.stderr === undefined ? false: options.stderr;
