@@ -37,10 +37,6 @@ var JSClassTest = vows.describe('JSClass module').addBatch({
             assert.isFunction(topic.Class);
             assert.isFunction(topic.Module);
             assert.isFunction(topic.Interface);
-        },
-        'should have modules of the stdlib (Comparable, Enumerable, ...)': function (topic) {
-            assert.isObject(topic.Comparable);
-            assert.isObject(topic.Enumerable);
         }
     }
 });

@@ -50,7 +50,6 @@ var BaseTest = vows.describe('base module').addBatch({
             assert.isFunction(topic.class);
             assert.isFunction(topic.module);
             assert.isFunction(topic.interface);
-            assert.isFunction(topic.dict);
         }
     },*/
     "isArray()": {
