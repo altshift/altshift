@@ -22,7 +22,7 @@ var RESOURCE_DIR = path.join(env.RESOURCE, 'test', path.basename(__filename).rep
  * JSLint validation
  ******************************************************************************/
 try {
-    require('lint').vows.createTest([__filename, __filenameTested]).export(module);
+    exports.JSLintTest = require('lint').vows.createTest([__filename, __filenameTested]);
 } catch (e) {
     console.warn('Warning: JSLint not found try `npm install lint`');
 }
