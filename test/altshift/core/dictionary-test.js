@@ -219,17 +219,17 @@ var DictionaryTest = vows.describe('Dictionary class').addBatch({
             assert.deepEqual(topic.length, 1);
         }
     },
-    "extend()" : {
+    "update()" : {
         topic : function (item) {
             return createDictionary();
         },
         'should return extends with an object' : function (topic) {
             topic.set('foo', 1);
 
-            topic.extend();
+            topic.update();
             assert.equal(topic.get('foo'), 1);
 
-            topic.extend({
+            topic.update({
                 bar : 2,
                 baz : 3
             });
@@ -237,7 +237,7 @@ var DictionaryTest = vows.describe('Dictionary class').addBatch({
             assert.equal(topic.get('bar'), 2);
             assert.equal(topic.get('baz'), 3);
 
-            topic.extend({
+            topic.update({
                 bar : 0,
                 baz : 0
             });
@@ -248,10 +248,10 @@ var DictionaryTest = vows.describe('Dictionary class').addBatch({
         'should return extends with a Hash' : function (topic) {
             topic.set('foo', 1);
 
-            topic.extend();
+            topic.update();
             assert.equal(topic.get('foo'), 1);
 
-            topic.extend(createDictionary({
+            topic.update(createDictionary({
                 bar : 2,
                 baz : 3
             }));
@@ -259,7 +259,7 @@ var DictionaryTest = vows.describe('Dictionary class').addBatch({
             assert.equal(topic.get('bar'), 2);
             assert.equal(topic.get('baz'), 3);
 
-            topic.extend(createDictionary({
+            topic.update(createDictionary({
                 bar : 0,
                 baz : 0
             }));
@@ -273,7 +273,7 @@ var DictionaryTest = vows.describe('Dictionary class').addBatch({
             return createDictionary();
         },
         'should return new Hash statisfying iterator' : function (topic) {
-            topic.extend({
+            topic.update({
                 foo : 1,
                 bar : 2,
                 baz : 'toto'
@@ -305,7 +305,7 @@ var DictionaryTest = vows.describe('Dictionary class').addBatch({
             assert.deepEqual(topic, createDictionary());
         },
         'should empty the content' : function (topic) {
-            topic.extend({
+            topic.update({
                 foo : 1,
                 bar : 2,
                 baz : 'toto'
