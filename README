@@ -7,7 +7,7 @@ dependencies and provide functions and classes relying on JS.Class (http://jscla
 
 HOW TO INSTALL:
 
- 1. Install plugin `git clone git://github.com/as-jpolo/altshift.git .` OR install via npm `npm install altshift` 
+ 1. Install plugin `git clone git://github.com/altshift/altshift.git .` OR install via npm `npm install altshift` 
  2. Include the library in your path
 
 CHANGELOG:

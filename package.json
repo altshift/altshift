@@ -1,15 +1,15 @@
 {
 	"name": "altshift",
-	"version": "0.3.9",
+	"version": "0.3.9-1",
 	"author": "Julien Polo <julien.polo@altshift.fr>",
 	"description": "Altshift open source framework",
 	"keywords": ["framework", "jsclass"],
 	"repository": { 
 		"type" : "git",
-		"url" : "git://github.com/as-jpolo/altshift.git"
+		"url" : "git://github.com/altshift/altshift.git"
 	},
 	"bugs": { 
-		"web" : "http://github.com/as-jpolo/altshift/issues" 
+		"web" : "http://github.com/altshift/altshift/issues" 
 	},
 	"main": "index",
 	"directories" : { 
@@ -19,7 +19,7 @@
 	"licenses" :[ 
 	    { 
 	  		"type" : "MIT",
-	    	"url" : "http://github.com/as-jpolo/altshift/blob/master//LICENSE"
+	    	"url" : "http://github.com/altshift/altshift/blob/master//LICENSE"
 	    }   
 	],
   	"dependencies": {
