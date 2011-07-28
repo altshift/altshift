@@ -17,11 +17,7 @@ var style = require(__filenameTested);
 /*******************************************************************************
  * JSLint validation
  ******************************************************************************/
-try {
-    exports.JSLintTest = require('lint').vows.createTest([__filename, __filenameTested]);
-} catch (e) {
-    console.warn('Warning: JSLint not found try `npm install lint`');
-}
+exports.JSLintTest = env.JSLintTest([__filenameTested, __filename]);
 
 /*******************************************************************************
  * StyleTest

@@ -68,4 +68,17 @@ env.toFileTested = function (filename) {
     throw new Error('cannot find module tested for "' + filename + '"');
 };
 
+env.JSLintTest = function (filenames) {
+    var lint;
+    try {
+        lint = require('lint');
+    } catch (e) {
+        console.warn('Warning: JSLint not found try `npm install lint`');
+    }
+
+    if (lint) {
+        return lint.vows.createTest(filenames);
+    }
+};
+
 module.exports = env;
