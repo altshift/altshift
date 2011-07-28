@@ -200,28 +200,59 @@ var FunctionTest = vows.describe('promise module').addBatch({
         topic: function () {
             var self = this,
                 report = {
-                    promise: new promise.Deferred()
+                    promise1: new promise.Deferred(),
+                    promise1Result: undefined,
+
+                    promise2: 'i-am-not-a-promise',
+                    promise2Result: undefined
+                },
+                count = 4,
+                onResolution = function () {
+                    count -= 1;
+                    if (count === 0) {
+                        self.callback(null, report);
+                    }
                 };
 
-            report.returnValue = promise.when(report.promise, function (result) {
-                report.result = result;
+            //async promise
+            report.promise1Result = promise.when(report.promise1, function (result) {
+                report.promise1AsyncResult1 = result;
+                onResolution();
             });
 
-            promise.when(report.promise, function (result) {
-                report.result2 = result;
-                self.callback(null, report);
+            promise.when(report.promise1, function (result) {
+                report.promise1AsyncResult2 = result;
+                onResolution();
+            });
+
+            //sync promise
+            report.promise2Result = promise.when(report.promise2, function (result) {
+                report.promise2AsyncResult1 = result;
+                onResolution();
+            });
+
+            promise.when(report.promise2, function (result) {
+                report.promise2AsyncResult2 = result;
+                onResolution();
             });
 
             setTimeout(function () {
-                report.promise.emitSuccess('successful result');
+                report.promise1.emitSuccess('successful result');
             }, 1);
+
+
         },
         "should return instance of Promise": function (topic) {
-            assert.ok(promise.isPromise(topic.returnValue));
+            assert.ok(promise.isPromise(topic.promise1Result));
+            assert.ok(promise.isPromise(topic.promise2Result));
         },
-        "should emitSuccess passing value to the callback": function (topic) {
-            assert.equal(topic.result, 'successful result');
-            assert.equal(topic.result2, 'successful result');
+        "should work with a promise as first argument": function (topic) {
+            assert.equal(topic.promise1AsyncResult1, 'successful result');
+            assert.equal(topic.promise1AsyncResult2, 'successful result');
+        },
+        "should work with any other value as first argument": function (topic) {
+            assert.equal(topic.promise2AsyncResult1, 'i-am-not-a-promise');
+            assert.equal(topic.promise2AsyncResult2, 'i-am-not-a-promise');
         }
 
     },
