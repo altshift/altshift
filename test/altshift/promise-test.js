@@ -171,7 +171,7 @@ var PromiseTest = vows.describe('Promise').addBatch({
                 }
             }, 10);
 
-            promise.all(report.promise, report.promiseAborted).then(function () {
+            promise.all(report.promise, report.promiseAborted).addBoth(function () {
                 self.callback(null, report);
             });
 
@@ -341,17 +341,49 @@ var FunctionTest = vows.describe('promise module').addBatch({
                     promise.defer(),
                     promise.defer()
                 ],
+                promisesError = [
+                    promise.defer(),
+                    promise.defer(),
+                    promise.defer(),
+                    promise.defer(),
+                    promise.defer()
+                ],
                 report = {
-                    returnValue: promise.all(promises)
+                    returnValue: promise.all(promises),
+                    returnValueErrored: promise.all(promisesError)
+                },
+                reportCount = 2,
+                fulfilled = function (result) {
+                    reportCount -= 1;
+                    if (!reportCount) {
+                        self.callback(null, report);
+                    }
                 };
-            promise.when(report.returnValue, function (result) {
-                report.result = result;
-                self.callback(null, report);
-            });
 
+
+            report.returnValue.then(function (result) {
+                report.result = result;
+                fulfilled();
+            }, fulfilled);
+
+            report.returnValueErrored.then(
+                fulfilled,
+                function (errors) {
+                    report.resultError = errors;
+                    fulfilled();
+                }
+            );
+
+
+            //emit success/error
             promises.forEach(function (promiseObj, index) {
                 setTimeout(function () {
                     promiseObj.emitSuccess('result:' + index);
+                }, Math.random() * 10 + 1);
+            });
+            promisesError.forEach(function (promiseObj, index) {
+                setTimeout(function () {
+                    promiseObj.emitError('error:' + index);
                 }, Math.random() * 10 + 1);
             });
         },
@@ -365,6 +397,15 @@ var FunctionTest = vows.describe('promise module').addBatch({
                 'result:2',
                 'result:3',
                 'result:4'
+            ]);
+        },
+        "should emitError if at least one promise emit an error": function (topic) {
+            assert.deepEqual(topic.resultError, [
+                'error:0',
+                'error:1',
+                'error:2',
+                'error:3',
+                'error:4'
             ]);
         }
     },

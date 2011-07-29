@@ -1,6 +1,6 @@
 {
 	"name": "altshift",
-	"version": "0.3.10",
+	"version": "0.3.11",
 	"author": "Julien Polo <julien.polo@altshift.fr>",
 	"description": "Altshift open source framework",
 	"keywords": ["framework", "jsclass"],
